@@ -1,13 +1,15 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { DndContext, DragEndEvent } from '@dnd-kit/core';
+import { closestCenter, closestCorners, DndContext, DragEndEvent } from '@dnd-kit/core';
 import Editor, { EditorProps } from '@monaco-editor/react';
 import { Layout, Menu, Tabs } from 'antd';
 import { autorun } from 'mobx';
 import styles from '../builder/App.module.less';
-import { observer, BuilderStore, TreeNode } from '../builder/models';
+import { observer, BuilderStore } from '../builder/models';
 import { defaultSchema } from '../builder/seeds';
 import { Builder } from './components/Builder/Builder';
+import { Tree } from './components/Builder/Tree';
 import { Toolbox } from './components/ComponentLibrary/Toolbox';
+import { demoForm } from './store/fixtures';
 
 const baseUrl = import.meta.env.BASE_URL;
 
@@ -19,7 +21,7 @@ const monacoEditorOptions: EditorProps['options'] = {
 };
 
 const handleDragEnd = (event: DragEndEvent) => {
-  console.log(event);
+  // console.log(event);
 };
 
 export const App: FC = observer(() => {
@@ -44,7 +46,7 @@ export const App: FC = observer(() => {
     [builderStore]
   );
   return (
-    <DndContext onDragEnd={handleDragEnd}>
+    <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCorners}>
       <Layout className={styles.app}>
         <Layout.Header className={styles.header}>
           <h1>Form Builder</h1>
@@ -62,7 +64,7 @@ export const App: FC = observer(() => {
 
         <Layout>
           <Layout.Sider className={styles.outline} width={240}>
-            <h2>Form Outline</h2>
+            <Tree item={demoForm} />
           </Layout.Sider>
 
           <Layout.Content className={styles.fields}>
@@ -72,7 +74,7 @@ export const App: FC = observer(() => {
               activeKey={tabActiveKey}
               onTabClick={setTabActiveKey}
             >
-              <Tabs.TabPane tab="Design" key="1" style={{ overflowY: 'scroll' }}>
+              <Tabs.TabPane tab="Design" key="1" style={{ overflowY: 'auto' }}>
                 {/* <Builder treeNode={builderStore.treeNode} /> */}
                 <Builder />
               </Tabs.TabPane>

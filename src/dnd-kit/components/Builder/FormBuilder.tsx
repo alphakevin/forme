@@ -1,11 +1,10 @@
 import React from 'react';
-import * as icons from '../../../builder/assets/icons';
-import { FormData } from '../../store/types';
-import './FormBuilder.less';
+import { FormBuilderData } from '../../types/form-data';
 import { FormSection } from './FormSection';
+import './FormBuilder.less';
 
 export interface FormSectionProps {
-  form: FormData;
+  form: FormBuilderData;
 }
 
 export function FormBuilder(props: FormSectionProps): JSX.Element {
@@ -13,7 +12,7 @@ export function FormBuilder(props: FormSectionProps): JSX.Element {
   return (
     <div className="FormBuilder">
       <div className="sections">
-        {form.sections.map((section, index) => (
+        {form.children.map((section, index) => (
           <FormSection key={section.id} section={section} index={index} />
         ))}
       </div>

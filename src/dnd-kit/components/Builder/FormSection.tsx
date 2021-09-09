@@ -1,6 +1,6 @@
 import React from 'react';
 import * as icons from '../../../builder/assets/icons';
-import { SectionData } from '../../store/types';
+import { SectionData } from '../../types/form-data';
 import { numberToLetters } from '../../utils/numbers';
 import './FormSection.less';
 import { FormTerm } from './FormTerm';
@@ -21,7 +21,7 @@ export function FormSection(props: FormSectionProps): JSX.Element {
         </span>
       </div>
       <div className="terms">
-        {section.terms.map((term, index) => (
+        {section.children.map((term, index) => (
           <FormTerm key={term.id} term={term} index={index} />
         ))}
       </div>

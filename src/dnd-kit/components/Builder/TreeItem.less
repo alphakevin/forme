@@ -1,0 +1,15 @@
+.TreeItem {
+  ul.children {
+    height: 0;
+    overflow: hidden;
+    margin-left: 16px;
+  }
+  &.expanded > ul.children {
+    height: auto;
+    overflow: visible;
+    display: block;
+  }
+  .content {
+    padding: 8px 0;
+  }
+}

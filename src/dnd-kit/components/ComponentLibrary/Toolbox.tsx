@@ -8,7 +8,7 @@ export function Toolbox() {
       <div className="tip">Drag and drop a form component into a term</div>
       <div>
         {componentItems.map((item) => (
-          <ComponentItem key={item.type} component={item} />
+          <ComponentItem key={item.type} type={item.type} />
         ))}
       </div>
     </div>

@@ -1,15 +1,16 @@
 .FormTerm {
+  position: relative;
   background: #ffffff;
   box-sizing: border-box;
   border-radius: 4px;
   margin: 16px 0;
   border: 1px solid transparent;
-  &:hover {
+  &:hover, &.dropOver {
     border-color: #4f4bcb;
   }
   & > .header {
     box-sizing: content-box;
-    margin: 16px;
+    padding: 16px;
     font-weight: 600;
     font-size: 18px;
     line-height: 24px;
@@ -17,7 +18,19 @@
   }
   & > .components > .drop-zone {
     display: flex;
-    margin: 24px;
+    padding: 24px;
     line-height: 24px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    color: #596068;
+    opacity: 0.6;
+    .spacer {
+      flex-grow: 1;
+      margin: 0 8px;
+      border-bottom: 1px dashed #A8A8A8;
+    }
   }
 }
