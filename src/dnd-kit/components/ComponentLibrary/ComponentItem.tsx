@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import * as icons from '../../../builder/assets/icons';
-import { FormDndData } from '../../dnd/draggable';
+import { DraggingData } from '../../dnd/draggable';
 import { LibraryComponentType } from '../../types/common';
 import { ComponentIcon } from './ComponentIcon';
 import { getComponentConfig } from './config';
@@ -17,35 +17,19 @@ export function ComponentItem<T extends LibraryComponentType>(
 ): JSX.Element {
   const { type } = props;
   const config = getComponentConfig(type);
+
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: `Component-${type}`,
     data: {
       from: 'Library',
       item: config.getData(),
-    } as FormDndData<T>,
+    } as DraggingData,
   });
-  const style = {
-    transform: CSS.Translate.toString(transform),
-  };
-  const element = (
-    <div className="ComponentItem">
+
+  return (
+    <div className="ComponentItem" ref={setNodeRef} {...listeners} {...attributes}>
       <ComponentIcon className="icon" item={config} />
       <div className="name">{config.name}</div>
     </div>
-  );
-  return (
-    <>
-      {isDragging &&
-        React.cloneElement(element, {
-          ref: undefined,
-          style: { position: 'absolute', transform: 'translateY(-6px)' },
-        })}
-      {React.cloneElement(element, {
-        ref: setNodeRef,
-        style,
-        ...listeners,
-        ...attributes,
-      })}
-    </>
   );
 }

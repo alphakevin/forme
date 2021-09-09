@@ -1,7 +1,7 @@
-import React, { Fragment, useContext, useEffect } from 'react';
-import { useDroppable } from '@dnd-kit/core';
+import React, { Fragment, useCallback, useContext, useEffect, useMemo } from 'react';
+import { useDraggable, useDroppable } from '@dnd-kit/core';
 import clsx from 'clsx';
-import { FormDndData } from '../../dnd/draggable';
+import { DraggingData } from '../../dnd/draggable';
 import { ComponentData } from '../../types/form-data';
 import { isContainerComponent, isFormFieldComponent } from '../../utils/form';
 import { ComponentIcon } from '../ComponentLibrary/ComponentIcon';
@@ -17,44 +17,70 @@ interface TreeItemProps {
 
 export function TreeItem(props: TreeItemProps) {
   const { item, index } = props;
+
+  const { expandedItems, toggle, expand } = useContext(TreeContext);
+  const expanded = expandedItems.includes(item.id);
   const config = getComponentConfig(item.type);
+
+  const droppableData: DraggingData = {
+    from: 'Builder',
+    item: item,
+  };
+  const { setNodeRef: setDroppableNode, isOver } = useDroppable({
+    id: `Component-tree-content-${item.id}`,
+    data: droppableData,
+  });
+
+  const {
+    listeners,
+    setNodeRef: setDraggableNode,
+    isDragging,
+  } = useDraggable({
+    id: `Component-Tree-${item.id}`,
+    data: {
+      from: 'Builder',
+      item,
+    } as DraggingData,
+  });
+
+  const expandItem = useCallback(() => expand(item.id), []);
+
+  useEffect(() => {
+    if (isOver && isContainerComponent(item)) {
+      window.requestAnimationFrame(expandItem);
+    }
+  }, [isOver]);
+
   const title = isContainerComponent(item)
     ? item.title
     : isFormFieldComponent(item)
     ? item.question
     : `${config.name}`;
-  const { expandedItems, toggle, expand } = useContext(TreeContext);
-  const droppableData: FormDndData = {
-    from: 'Builder',
-    item: item,
-  };
-  const { setNodeRef, isOver, over, active } = useDroppable({
-    id: `Component-tree-content-${item.id}`,
-    data: droppableData,
-  });
-  useEffect(() => {
-    let timer = 0;
-    if (isOver) {
-      timer = window.setTimeout(() => expand(item.id), 300);
-    }
-    return () => window.clearTimeout(timer);
-  }, [isOver]);
+
   return (
-    <li className={clsx('TreeItem', { expanded: expandedItems.includes(item.id) })}>
-      <div ref={setNodeRef} className="content" onClick={() => toggle(item.id)}>
-        <ComponentIcon item={item} size={24} />
-        {item.type} - {title}
+    <li className={clsx('TreeItem', { expanded })}>
+      <div ref={setDraggableNode} {...listeners}>
+        <div
+          ref={setDroppableNode}
+          className={clsx('content', { dragOver: isOver })}
+          onClick={() => toggle(item.id)}
+        >
+          <ComponentIcon className="icon" item={item} size={24} />
+          <span className="title">
+            {item.type} - {title}
+          </span>
+        </div>
       </div>
       <ul className="children">
-        {isContainerComponent(item) && (
+        {isContainerComponent(item) && item.children.length > 0 && (
           <>
             {item.children.map((child: ComponentData, index: number) => (
               <Fragment key={child.id}>
-                <DropArea item={child} prefix="tree" index={index} />
+                <DropArea id={child.id} item={item} prefix="tree" index={index} />
                 <TreeItem item={child} index={index} />
               </Fragment>
             ))}
-            <DropArea item={item} prefix="tree-last" index={item.children.length + 1} />
+            <DropArea id="last" item={item} prefix="tree-last" index={item.children.length + 1} />
           </>
         )}
       </ul>

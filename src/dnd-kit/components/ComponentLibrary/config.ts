@@ -4,6 +4,7 @@ import { ComponentDataByType } from '../../types/form-data';
 
 export interface ComponentConfigByType<T extends LibraryComponentType = any> {
   type: T;
+  disabled?: boolean;
   name: string;
   childTypes?: LibraryComponentType[];
   getData?: (source?: ComponentDataByType<T>) => ComponentDataByType<T>;
@@ -16,6 +17,7 @@ export const componentItems: ComponentConfig[] = [
     type: 'Form',
     name: 'Form',
     childTypes: ['Section'],
+    disabled: true,
     getData: (source) => {
       const id = getId();
       return {
@@ -80,7 +82,7 @@ export const componentItems: ComponentConfig[] = [
     getData: (source) => {
       const id = getId();
       return {
-        type: 'ShortAnswer',
+        type: 'LongAnswer',
         annotationId: null,
         tip: null,
         description: '',
@@ -97,7 +99,7 @@ export const componentItems: ComponentConfig[] = [
     getData: (source) => {
       const id = getId();
       return {
-        type: 'ShortAnswer',
+        type: 'SingleCheckbox',
         annotationId: null,
         tip: null,
         description: '',

@@ -1,15 +1,25 @@
 .TreeItem {
-  ul.children {
-    height: 0;
+  position: relative;
+  .content {
+    margin: 8px;
+    padding: 8px 0;
+    text-overflow: ellipsis;
     overflow: hidden;
+    white-space: nowrap;
+    cursor: default;
+    user-select: none;
+  }
+  .icon {
+    pointer-events: none;
+  }
+  .title {
+    margin-left: 8px;
+  }
+  & > ul.children {
+    display: none;
     margin-left: 16px;
   }
   &.expanded > ul.children {
-    height: auto;
-    overflow: visible;
     display: block;
-  }
-  .content {
-    padding: 8px 0;
   }
 }

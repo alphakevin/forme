@@ -1,3 +1,4 @@
+import { getComponentConfig } from '../components/ComponentLibrary/config';
 import { LibraryComponentType } from '../types/common';
 import {
   ComponentData,
@@ -51,4 +52,13 @@ export function isLayoutComponentType(type: LibraryComponentType): type is Layou
 
 export function isLayoutComponent(component: ComponentData): component is LayoutComponentData {
   return isLayoutComponentType(component.type);
+}
+
+export function getComponentTitle(item: ComponentData): string {
+  const config = getComponentConfig(item.type);
+  return isContainerComponent(item)
+    ? item.title
+    : isFormFieldComponent(item)
+    ? item.question
+    : `${config.name}`;
 }

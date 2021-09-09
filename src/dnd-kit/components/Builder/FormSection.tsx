@@ -22,7 +22,7 @@ export function FormSection(props: FormSectionProps): JSX.Element {
       </div>
       <div className="terms">
         {section.children.map((term, index) => (
-          <FormTerm key={term.id} term={term} index={index} />
+          <FormTerm key={term.id} item={term} index={index} />
         ))}
       </div>
     </div>
