@@ -6,3 +6,5 @@ export type LibraryComponentType =
   | 'LongAnswer'
   | 'SingleCheckbox'
   | 'Description';
+
+export type ComponentTypeCategory = 'Container' | 'FormField' | 'Layout';

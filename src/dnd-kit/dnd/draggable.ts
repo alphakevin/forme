@@ -1,5 +1,5 @@
 import { Active, LayoutRect, Over } from '@dnd-kit/core';
-import { isAcceptableChild } from '../components/ComponentLibrary/config';
+import { isAcceptableChild } from '../config/components';
 import { LibraryComponentType } from '../types/common';
 import { ComponentDataByType } from '../types/form-data';
 import { isFormFieldComponentType } from '../utils/form';
@@ -7,6 +7,7 @@ import { isFormFieldComponentType } from '../utils/form';
 export interface DraggingData<T extends LibraryComponentType = any> {
   from: 'Library' | 'Builder' | 'Tree';
   item: ComponentDataByType<T>;
+  index?: number;
 }
 
 export function getDraggingData(draggingData: Active | Over): DraggingData {
@@ -17,10 +18,12 @@ export function isDroppable(overData?: DraggingData, activeData?: DraggingData):
   if (!overData || !activeData) return false;
   const { type: overType } = overData.item;
   const { type: activeType } = activeData.item;
+  console.log(overType, activeType);
   return (
-    overType === activeType ||
+    // overType === activeType
     isAcceptableChild(overType, activeType) ||
-    (isFormFieldComponentType(overType) && isFormFieldComponentType(activeType))
+    // (isFormFieldComponentType(overType) && isFormFieldComponentType(activeType))
+    false
   );
 }
 

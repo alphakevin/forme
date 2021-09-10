@@ -1,4 +1,4 @@
-import { getComponentConfig } from '../components/ComponentLibrary/config';
+import { getComponentConfig } from '../config/components';
 import { LibraryComponentType } from '../types/common';
 import {
   ComponentData,
@@ -61,4 +61,8 @@ export function getComponentTitle(item: ComponentData): string {
     : isFormFieldComponent(item)
     ? item.question
     : `${config.name}`;
+}
+
+export function getSubTypes(type: LibraryComponentType): LibraryComponentType[] {
+  return [];
 }

@@ -4,15 +4,15 @@ import { ComponentEditor } from '../ComponentLibrary/ComponentEditor';
 import './FormComponent.less';
 
 export interface FormSectionProps {
-  component: FormFieldComponentData;
+  item: FormFieldComponentData;
   index: number;
 }
 
 export function FormComponent(props: FormSectionProps): JSX.Element {
-  const { component, index } = props;
+  const { item, index } = props;
   return (
-    <div className="FormComponent">
-      <ComponentEditor component={component as any} index={index} />
+    <div className="FormComponent" data-id={`item-${item.id}`}>
+      <ComponentEditor item={item as any} index={index} />
     </div>
   );
 }

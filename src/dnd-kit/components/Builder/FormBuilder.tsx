@@ -1,21 +1,19 @@
 import React from 'react';
 import { FormBuilderData } from '../../types/form-data';
-import { FormSection } from './FormSection';
+// eslint-disable-next-line import/no-cycle
+import { FormChildren } from './FormChildren';
 import './FormBuilder.less';
 
 export interface FormSectionProps {
-  form: FormBuilderData;
+  item: FormBuilderData;
+  index: number;
 }
 
 export function FormBuilder(props: FormSectionProps): JSX.Element {
-  const { form } = props;
+  const { item } = props;
   return (
-    <div className="FormBuilder">
-      <div className="sections">
-        {form.children.map((section, index) => (
-          <FormSection key={section.id} section={section} index={index} />
-        ))}
-      </div>
+    <div className="FormBuilder" data-id={item.id}>
+      <FormChildren item={item} />
     </div>
   );
 }

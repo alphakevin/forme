@@ -1,9 +1,8 @@
 import React, { HTMLAttributes } from 'react';
+import { getComponentConfig } from '../../config/components';
 import { DraggingData } from '../../dnd/draggable';
-import { ComponentData } from '../../types/form-data';
 import { getComponentTitle } from '../../utils/form';
 import { ComponentIcon } from './ComponentIcon';
-import { getComponentConfig } from './config';
 import './DraggingItem.less';
 
 export interface DraggingItemProps extends HTMLAttributes<HTMLDivElement> {

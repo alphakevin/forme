@@ -5,7 +5,7 @@ import { FormBuilder } from './FormBuilder';
 export function Builder() {
   return (
     <div>
-      <FormBuilder form={demoForm} />
+      <FormBuilder item={demoForm} />
     </div>
   );
 }

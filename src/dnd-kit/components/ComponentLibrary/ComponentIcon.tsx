@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import clsx from 'clsx';
 import * as icons from '../../../builder/assets/icons';
+import { ComponentConfig } from '../../config/components';
 import { ComponentData } from '../../types/form-data';
-import { ComponentConfig } from './config';
 import './ComponentIcon.less';
 
-interface Props {
+interface Props extends HTMLAttributes<HTMLImageElement> {
   item: ComponentData | ComponentConfig;
-  className?: string;
   size?: number;
 }
 
@@ -16,12 +15,14 @@ export function ComponentIcon(props: Props) {
     className,
     item: { type },
     size = 40,
+    ...otherProps
   } = props;
   return (
     <img
+      {...otherProps}
       className={clsx('ComponentIcon', className)}
       src={icons[type]}
-      style={{ width: size, height: size }}
+      style={{ width: size, height: size, ...otherProps.style }}
     />
   );
 }

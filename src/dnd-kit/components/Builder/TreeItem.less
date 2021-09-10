@@ -3,17 +3,34 @@
   .content {
     margin: 8px;
     padding: 8px 0;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
     cursor: default;
     user-select: none;
   }
-  .icon {
+  .content {
+    display: flex;
+    cursor: pointer;
+  }
+  .icon img {
     pointer-events: none;
   }
   .title {
+    flex-grow: 1;
     margin-left: 8px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .child-count {
+    display: block;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    background-color: lighten(#4f4bcb, 20%);
+    color: #fff;
+    text-align: center;
+    line-height: 24px;
+    flex-grow: 0;
+    flex-shrink: 0;
   }
   & > ul.children {
     display: none;

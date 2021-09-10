@@ -2,29 +2,26 @@ import React from 'react';
 import * as icons from '../../../builder/assets/icons';
 import { SectionData } from '../../types/form-data';
 import { numberToLetters } from '../../utils/numbers';
+// eslint-disable-next-line import/no-cycle
+import { FormChildren } from './FormChildren';
 import './FormSection.less';
-import { FormTerm } from './FormTerm';
 
 export interface FormSectionProps {
-  section: SectionData;
+  item: SectionData;
   index: number;
 }
 
 export function FormSection(props: FormSectionProps): JSX.Element {
-  const { section, index } = props;
+  const { item, index } = props;
   return (
-    <div className="FormSection">
+    <div className="FormSection" data-id={`item-${item.id}`}>
       <div className="header">
         <img src={icons.Section} />
         <span>
-          {numberToLetters(index + 1)}. {section.title}
+          {numberToLetters(index + 1)}. {item.title}
         </span>
       </div>
-      <div className="terms">
-        {section.children.map((term, index) => (
-          <FormTerm key={term.id} item={term} index={index} />
-        ))}
-      </div>
+      <FormChildren item={item} />
     </div>
   );
 }

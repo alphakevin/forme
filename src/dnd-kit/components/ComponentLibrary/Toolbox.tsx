@@ -1,6 +1,6 @@
 import React from 'react';
+import { componentItems } from '../../config/components';
 import { ComponentItem } from './ComponentItem';
-import { componentItems } from './config';
 
 const libraryComponents = componentItems.filter((item) => !item.disabled);
 

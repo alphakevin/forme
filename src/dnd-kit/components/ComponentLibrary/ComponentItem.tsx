@@ -2,10 +2,10 @@ import React, { useMemo } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import * as icons from '../../../builder/assets/icons';
+import { getComponentConfig } from '../../config/components';
 import { DraggingData } from '../../dnd/draggable';
 import { LibraryComponentType } from '../../types/common';
 import { ComponentIcon } from './ComponentIcon';
-import { getComponentConfig } from './config';
 import './ComponentItem.less';
 
 export interface ComponentItemProps<T extends LibraryComponentType> {

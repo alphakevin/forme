@@ -1,11 +1,11 @@
 import React, { Fragment, useCallback, useContext, useEffect, useMemo } from 'react';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
 import clsx from 'clsx';
-import { DraggingData } from '../../dnd/draggable';
+import { filterTypes, getComponentConfig } from '../../config/components';
+import { DraggingData, getDraggingData } from '../../dnd/draggable';
 import { ComponentData } from '../../types/form-data';
-import { isContainerComponent, isFormFieldComponent } from '../../utils/form';
+import { getComponentTitle, isContainerComponent, isFormFieldComponent } from '../../utils/form';
 import { ComponentIcon } from '../ComponentLibrary/ComponentIcon';
-import { getComponentConfig } from '../ComponentLibrary/config';
 import { DropArea } from './DropArea';
 import './TreeItem.less';
 import { TreeContext } from './TreeContext';
@@ -18,24 +18,23 @@ interface TreeItemProps {
 export function TreeItem(props: TreeItemProps) {
   const { item, index } = props;
 
-  const { expandedItems, toggle, expand } = useContext(TreeContext);
-  const expanded = expandedItems.includes(item.id);
-  const config = getComponentConfig(item.type);
+  const { expandedItems, collapsedTypes, toggle, expand } = useContext(TreeContext);
 
   const droppableData: DraggingData = {
     from: 'Builder',
     item: item,
   };
-  const { setNodeRef: setDroppableNode, isOver } = useDroppable({
+
+  const {
+    setNodeRef: setDroppableNode,
+    isOver,
+    active,
+  } = useDroppable({
     id: `Component-tree-content-${item.id}`,
     data: droppableData,
   });
 
-  const {
-    listeners,
-    setNodeRef: setDraggableNode,
-    isDragging,
-  } = useDraggable({
+  const { listeners, setNodeRef: setDraggableNode } = useDraggable({
     id: `Component-Tree-${item.id}`,
     data: {
       from: 'Builder',
@@ -43,19 +42,32 @@ export function TreeItem(props: TreeItemProps) {
     } as DraggingData,
   });
 
+  const currentConfig = getComponentConfig(item.type);
+  const activeType = getDraggingData(active)?.item.type;
+  const activeConfig = getComponentConfig(activeType);
+
+  const expanded = expandedItems.includes(item.id) && !collapsedTypes.includes(item.type);
+
   const expandItem = useCallback(() => expand(item.id), []);
 
   useEffect(() => {
-    if (isOver && isContainerComponent(item)) {
+    if (isOver && activeConfig.level > currentConfig.level) {
       window.requestAnimationFrame(expandItem);
     }
-  }, [isOver]);
+  }, [isOver, currentConfig, activeConfig]);
 
-  const title = isContainerComponent(item)
-    ? item.title
-    : isFormFieldComponent(item)
-    ? item.question
-    : `${config.name}`;
+  const isContainer = isContainerComponent(item);
+  const title = getComponentTitle(item);
+
+  const scrollToItem = useCallback(
+    (event: React.MouseEvent) => {
+      event.stopPropagation();
+      const element = document.querySelector(`[data-id='item-${item.id}']`);
+      console.log();
+      element.scrollIntoView({ behavior: 'smooth' });
+    },
+    [item]
+  );
 
   return (
     <li className={clsx('TreeItem', { expanded })}>
@@ -63,16 +75,22 @@ export function TreeItem(props: TreeItemProps) {
         <div
           ref={setDroppableNode}
           className={clsx('content', { dragOver: isOver })}
-          onClick={() => toggle(item.id)}
+          data-id={item.id}
+          onClick={scrollToItem}
         >
-          <ComponentIcon className="icon" item={item} size={24} />
-          <span className="title">
-            {item.type} - {title}
-          </span>
+          <div
+            className="icon"
+            onClick={() => toggle(item.id)}
+            title={expanded ? 'Collapse' : 'Expand'}
+          >
+            <ComponentIcon item={item} size={24} />
+          </div>
+          <span className="title">{title}</span>
+          {isContainer && !expanded && <span className="child-count">{item.children.length}</span>}
         </div>
       </div>
       <ul className="children">
-        {isContainerComponent(item) && item.children.length > 0 && (
+        {isContainer && (
           <>
             {item.children.map((child: ComponentData, index: number) => (
               <Fragment key={child.id}>

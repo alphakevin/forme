@@ -1,9 +1,12 @@
-import React, { createContext, useCallback, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useEffect, useMemo, useState } from 'react';
+import { filterTypes, getComponentConfig } from '../../config/components';
+import { useActiveItemType } from '../../dnd/hooks';
+import { LibraryComponentType } from '../../types/common';
 import { ComponentData } from '../../types/form-data';
-import './Tree.less';
 import { addArrayItem, removeArrayItem } from '../../utils/tree';
 import { TreeContext } from './TreeContext';
 import { TreeItem } from './TreeItem';
+import './Tree.less';
 
 interface TreeProps {
   item: ComponentData;
@@ -12,6 +15,7 @@ interface TreeProps {
 export function Tree(props: TreeProps) {
   const { item } = props;
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const [collapsedTypes, setCollapsedTypes] = useState<LibraryComponentType[]>([]);
   const expand = useCallback((id: string) => {
     setExpandedItems((ids) => addArrayItem(ids, id));
   }, []);
@@ -26,8 +30,18 @@ export function Tree(props: TreeProps) {
     },
     [expand, collapse]
   );
+  const activeType = useActiveItemType();
+  useEffect(() => {
+    if (activeType) {
+      const activeConfig = getComponentConfig(activeType);
+      const types = filterTypes((config) => config.level >= activeConfig.level);
+      setCollapsedTypes(types);
+    } else {
+      setCollapsedTypes([]);
+    }
+  }, [activeType]);
   return (
-    <TreeContext.Provider value={{ expandedItems, expand, collapse, toggle }}>
+    <TreeContext.Provider value={{ expandedItems, expand, collapse, toggle, collapsedTypes }}>
       <ul className="Tree">
         <TreeItem item={item} index={0} />
       </ul>
