@@ -25,13 +25,13 @@ export function CommonFieldEditor(props: CommonFieldEditorProps) {
       onValuesChange={onRequiredTypeChange}
       requiredMark={requiredMark}
     >
-      <Form.Item label="Question" required tooltip="This is a required field">
+      <Form.Item label="Label" required tooltip="This is a required field">
         <Input
           defaultValue={data.question}
           placeholder="Select all the structures that exist on your property"
         />
       </Form.Item>
-      <Form.Item label="Description text">
+      <Form.Item label="Placeholder">
         <Input defaultValue={data.description} placeholder="" />
       </Form.Item>
     </Form>
