@@ -1,4 +1,6 @@
 import React from 'react';
+import { useDraggable } from '@dnd-kit/core';
+import { DraggingData } from '../../dnd/draggable';
 import { TermData } from '../../types/form-data';
 import { romanize } from '../../utils/numbers';
 // eslint-disable-next-line import/no-cycle
@@ -12,9 +14,18 @@ export interface FormSectionProps {
 
 export function FormTerm(props: FormSectionProps): JSX.Element {
   const { item, index } = props;
+
+  const { listeners, setNodeRef } = useDraggable({
+    id: `Component-Editor-${item.id}`,
+    data: {
+      from: 'Builder',
+      item,
+    } as DraggingData,
+  });
+
   return (
     <div className="FormTerm" data-id={`item-${item.id}`}>
-      <div className="header">
+      <div className="header" ref={setNodeRef} {...listeners}>
         <span>
           {romanize(index + 1)}. {item.title}
         </span>
