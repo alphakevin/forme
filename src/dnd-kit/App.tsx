@@ -93,11 +93,11 @@ export const App: FC = observer(() => {
           <Menu
             theme="dark"
             mode="horizontal"
-            defaultSelectedKeys={['dnd-kit']}
+            defaultSelectedKeys={['index']}
             onSelect={(e) => (location.href = `${baseUrl}${e.key}.html`)}
           >
-            <Menu.Item key="index">Builder</Menu.Item>
-            <Menu.Item key="dnd-kit">Dnd Kit</Menu.Item>
+            <Menu.Item key="builder">Builder</Menu.Item>
+            <Menu.Item key="index">Dnd Kit</Menu.Item>
             <Menu.Item key="formily">Formily</Menu.Item>
           </Menu>
         </Layout.Header>
