@@ -1,3 +1,4 @@
+export { default as Form } from './Form.svg';
 export { default as LongAnswer } from './LongAnswer.svg';
 export { default as Section } from './Section.svg';
 export { default as ShortAnswer } from './ShortAnswer.svg';
