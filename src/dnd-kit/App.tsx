@@ -1,27 +1,28 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import {
-  closestCorners,
+  closestCenter,
   DndContext,
   DragEndEvent,
   DragOverlay,
   DragStartEvent,
-  LayoutMeasuringStrategy,
+  getBoundingClientRect,
   MouseSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
-import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 import Editor, { EditorProps } from '@monaco-editor/react';
-import { Layout, Menu, Tabs } from 'antd';
+import { Layout, Menu, Switch, Tabs } from 'antd';
 import { autorun } from 'mobx';
 import styles from '../builder/App.module.less';
 import { observer, BuilderStore } from '../builder/models';
 import { defaultSchema } from '../builder/seeds';
+import { Debug } from './Debug';
 import { Builder } from './components/Builder/Builder';
 import { Tree } from './components/Builder/Tree';
 import { DraggingItem } from './components/ComponentLibrary/DraggingItem';
 import { Toolbox } from './components/ComponentLibrary/Toolbox';
 import { DraggingData } from './dnd/draggable';
+import { snapIconToCursor } from './dnd/modifiers';
 import { demoForm } from './store/fixtures';
 import { ComponentData } from './types/form-data';
 
@@ -37,6 +38,7 @@ const monacoEditorOptions: EditorProps['options'] = {
 export const App: FC = observer(() => {
   const [tabActiveKey, setTabActiveKey] = useState('1');
   const [draggingData, setDraggingData] = useState<DraggingData>(null);
+  const [enableDebug, setEnableDebug] = useState(false);
 
   const mouseSensor = useSensor(MouseSensor, {
     // Require the mouse to move by 10 pixels before activating
@@ -79,10 +81,42 @@ export const App: FC = observer(() => {
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={closestCorners}
-      layoutMeasuring={{
-        strategy: LayoutMeasuringStrategy.Always,
-        frequency: 200,
+      collisionDetection={closestCenter}
+      measuring={{
+        draggable: {
+          measure: (node) => {
+            const rect = getBoundingClientRect(node);
+            const width = 210;
+            const height = 56;
+            return {
+              ...rect,
+              width,
+              height,
+              right: rect.left + width,
+              bottom: rect.top + height,
+            };
+          },
+        },
+        droppable: {
+          measure: (node) => {
+            const rect = getBoundingClientRect(node);
+            if (rect.height > 10) return rect;
+            // const width = 210;
+            const height = 56;
+            // const left = rect.left + rect.width / 2 - width / 2;
+            const top = rect.top - height / 2;
+            return {
+              ...rect,
+              // width,
+              height,
+              // left,
+              top,
+              // right: left + width,
+              bottom: top + height,
+              offsetTop: rect.offsetTop - height / 2,
+            };
+          },
+        },
       }}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
@@ -114,7 +148,11 @@ export const App: FC = observer(() => {
               activeKey={tabActiveKey}
               onTabClick={setTabActiveKey}
             >
-              <Tabs.TabPane tab="Design" key="1" style={{ overflowY: 'auto' }}>
+              <Tabs.TabPane
+                tab="Design"
+                key="1"
+                style={{ overflowY: 'auto', position: 'relative' }}
+              >
                 {/* <Builder treeNode={builderStore.treeNode} /> */}
                 <Builder />
               </Tabs.TabPane>
@@ -132,14 +170,24 @@ export const App: FC = observer(() => {
           </Layout.Content>
 
           <Layout.Sider className={styles.library} width={240}>
+            <h2>Debugging</h2>
+            <p>
+              <label>
+                <b>Show Active Container </b>
+                <Switch checked={enableDebug} onChange={(checked) => setEnableDebug(checked)} />
+              </label>
+            </p>
             <h2>Component Library</h2>
             <Toolbox />
           </Layout.Sider>
         </Layout>
       </Layout>
-      <DragOverlay modifiers={[restrictToWindowEdges]}>
+
+      <DragOverlay modifiers={[snapIconToCursor]}>
         <DraggingItem data={draggingData} />
       </DragOverlay>
+
+      {enableDebug && <Debug />}
     </DndContext>
   );
 });

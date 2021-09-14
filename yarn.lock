@@ -457,27 +457,27 @@
   dependencies:
     tslib "^2.0.0"
 
-"@dnd-kit/core@^3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@dnd-kit/core/-/core-3.1.1.tgz#c5ad6665931f5a51e74226220e58ac7514f3faf0"
-  integrity sha512-18YY5+1lTqJbGSg6JBSa/fjAOTUYAysFrQ5Ti8oppEPHFacQbC+owM51y2z2KN0LkDHBfGZKw2sFT7++ttwfpA==
+"@dnd-kit/core@^4.0.0-next-202181324619":
+  version "4.0.0-next-202181324619"
+  resolved "https://registry.yarnpkg.com/@dnd-kit/core/-/core-4.0.0-next-202181324619.tgz#ddfb7dcf1c9554d89b1c83b1acd07a5244503287"
+  integrity sha512-nJxo8S/QiHJnRobg2MkO7qpgupzOlklffbytfycvnq55fiI4BAdrO9msngijZFRgyQ/tnMf+rD8voKD1I1l/fw==
   dependencies:
     "@dnd-kit/accessibility" "^3.0.0"
-    "@dnd-kit/utilities" "^2.0.0"
+    "@dnd-kit/utilities" "^3.0.0-next-202181324619"
     tslib "^2.0.0"
 
-"@dnd-kit/modifiers@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@dnd-kit/modifiers/-/modifiers-3.0.0.tgz#d6fc85f31d634d856edbc23f623d63890f5a8616"
-  integrity sha512-CmskqOcW4Bw61JP1Lqkx7cRzv9xQS/5seI+Q5eKhx+mS/MA5IrX2jgtMxvQ6PKYDnx2v/uHxqLNVhlvumtBTSQ==
+"@dnd-kit/modifiers@^4.0.0-next-202181324619":
+  version "4.0.0-next-202181324619"
+  resolved "https://registry.yarnpkg.com/@dnd-kit/modifiers/-/modifiers-4.0.0-next-202181324619.tgz#fdf22b189c0348dc2b7e396d762c7a67f6e4a91e"
+  integrity sha512-n5rTC+VTk91rdJOHwksht3+2IRu7DrXc+vgBhYTQolv1HlpQfSrLH7seItY8AtEiTzWRwwhZ/U1mSuQX+OfbwQ==
   dependencies:
-    "@dnd-kit/utilities" "^2.0.0"
+    "@dnd-kit/utilities" "^3.0.0-next-202181324619"
     tslib "^2.0.0"
 
-"@dnd-kit/utilities@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@dnd-kit/utilities/-/utilities-2.0.0.tgz#a8462dff65c6f606ecbe95273c7e263b14a1ab97"
-  integrity sha512-bjs49yMNzMM+BYRsBUhTqhTk6HEvhuY3leFt6Em6NaYGgygaMbtGbbXof/UXBv7rqyyi0OkmBBnrCCcxqS2t/g==
+"@dnd-kit/utilities@^3.0.0-next-202181324619":
+  version "3.0.0-next-202187151336"
+  resolved "https://registry.yarnpkg.com/@dnd-kit/utilities/-/utilities-3.0.0-next-202187151336.tgz#3285d20271cbe16707633e7441b3e2552b6f9d19"
+  integrity sha512-hhGqwxPQkkjhCoIj6mveg9cNYzYW8HtFkZEiKLIcWBNTtthSBVR6ae3Mp+0fgzQ/4QzQuf8qH6J+y/hFFSURxQ==
   dependencies:
     tslib "^2.0.0"
 

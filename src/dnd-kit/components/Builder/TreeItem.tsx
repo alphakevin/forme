@@ -51,9 +51,11 @@ export function TreeItem(props: TreeItemProps) {
   const expandItem = useCallback(() => expand(item.id), []);
 
   useEffect(() => {
+    let timer = 0;
     if (isOver && activeConfig.level > currentConfig.level) {
-      window.requestAnimationFrame(expandItem);
+      window.setTimeout(expandItem, 200);
     }
+    return () => window.clearTimeout(timer);
   }, [isOver, currentConfig, activeConfig]);
 
   const isContainer = isContainerComponent(item);
@@ -63,7 +65,6 @@ export function TreeItem(props: TreeItemProps) {
     (event: React.MouseEvent) => {
       event.stopPropagation();
       const element = document.querySelector(`[data-id='item-${item.id}']`);
-      console.log();
       element.scrollIntoView({ behavior: 'smooth' });
     },
     [item]
@@ -90,7 +91,7 @@ export function TreeItem(props: TreeItemProps) {
         </div>
       </div>
       <ul className="children">
-        {isContainer && (
+        {isContainer && expanded && (
           <>
             {item.children.map((child: ComponentData, index: number) => (
               <Fragment key={child.id}>

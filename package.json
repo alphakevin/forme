@@ -35,8 +35,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.3",
-    "@dnd-kit/core": "^3.1.1",
-    "@dnd-kit/modifiers": "^3.0.0",
+    "@dnd-kit/core": "^4.0.0-next-202181324619",
+    "@dnd-kit/modifiers": "^4.0.0-next-202181324619",
     "@formily/antd": "^2.0.0-rc.3",
     "@formily/core": "^2.0.0-rc.3",
     "@formily/designable-antd": "^2.0.0-rc.3",

@@ -34,7 +34,7 @@ export function FormChildren(props: FormChildrenProps): JSX.Element {
               <FormItem item={child} index={i} />
             </Fragment>
           ))}
-          <DropArea id="last" item={item} prefix="form" index={item.children.length + 1} />
+          <DropArea id="last" item={item} prefix="form" index={item.children.length} />
         </>
       )}
     </div>

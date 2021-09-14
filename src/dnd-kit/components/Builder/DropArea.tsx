@@ -19,6 +19,7 @@ export function DropArea(props: FormSectionProps): JSX.Element {
   const droppableData: DraggingData = {
     from: 'Builder',
     item: item,
+    index,
   };
   const { setNodeRef, isOver } = useDroppable({
     id: `Component-${prefix}-${id}-${item.id}`,
