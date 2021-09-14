@@ -137,7 +137,7 @@ export const App: FC = observer(() => {
         </Layout.Header>
 
         <Layout>
-          <Layout.Sider className={styles.outline} width={240}>
+          <Layout.Sider className={styles.outline} width={240} style={{ overflowY: 'auto' }}>
             <Tree item={demoForm} />
           </Layout.Sider>
 
@@ -148,11 +148,7 @@ export const App: FC = observer(() => {
               activeKey={tabActiveKey}
               onTabClick={setTabActiveKey}
             >
-              <Tabs.TabPane
-                tab="Design"
-                key="1"
-                style={{ overflowY: 'auto', position: 'relative' }}
-              >
+              <Tabs.TabPane tab="Design" key="1" style={{ overflowY: 'auto' }}>
                 {/* <Builder treeNode={builderStore.treeNode} /> */}
                 <Builder />
               </Tabs.TabPane>
