@@ -2,8 +2,13 @@
   margin-top: -1px;
   height: 3px;
   width: 100%;
+  overflow: hidden;
   // background: lighten(#4f4bcb, 20%);
+  transition: height 100ms linear;
+  border-radius: 4px;
   &.dropOver {
     background: #4f4bcb;
+    opacity: 0.5;
+    height: 48px;
   }
 }
