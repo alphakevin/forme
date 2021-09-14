@@ -1,8 +1,9 @@
 import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import * as icons from '../../../builder/assets/icons';
-import { getComponentConfig } from '../../config/components';
+import { filterTypes, getComponentConfig } from '../../config/components';
 import { DraggingData } from '../../dnd/draggable';
+import { useActiveItemType } from '../../dnd/hooks';
 import { LibraryComponentType } from '../../types/common';
 import { ComponentDataByType } from '../../types/form-data';
 import { CommonFieldEditor } from './editors/CommonFieldEditor';
@@ -18,6 +19,16 @@ export function ComponentEditor<T extends LibraryComponentType>(
 ): JSX.Element {
   const { item, index } = props;
   const config = getComponentConfig(item.type);
+  const activeType = useActiveItemType();
+
+  let expanded = true;
+  if (activeType) {
+    const activeConfig = getComponentConfig(activeType);
+    const childTypes = filterTypes((c) => c.level >= activeConfig.level);
+    if (childTypes.includes(item.type)) {
+      expanded = false;
+    }
+  }
 
   const { listeners, setNodeRef } = useDraggable({
     id: `Component-Editor-${item.id}`,
@@ -35,9 +46,11 @@ export function ComponentEditor<T extends LibraryComponentType>(
           {config.name} - {index + 1}
         </div>
       </div>
-      <div className="fields">
-        <CommonFieldEditor data={item} />
-      </div>
+      {expanded && (
+        <div className="fields">
+          <CommonFieldEditor data={item} />
+        </div>
+      )}
     </div>
   );
 }
